@@ -28,8 +28,8 @@ const userSchema = new mongoose.Schema({
   nic: {
     type: String,
     required: true,
-    minLength: [15, "Aadhar Card Must Contain Exact 15 Digits!"],
-    maxLength: [15, "Aadhar Card Must Contain Exact 15 Digits!"],
+    minLength: [15, "NIC Must Contain Exact 15 Digits!"],
+    maxLength: [15, "NIC Must Contain Exact 15 Digits!"],
   },
   dob: {
     type: Date,
