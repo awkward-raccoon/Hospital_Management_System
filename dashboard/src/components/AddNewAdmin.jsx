@@ -1,10 +1,10 @@
-import axios from "axios";
 import React, { useContext, useState } from "react";
-import { toast } from "react-toastify";
 import { Context } from "../main";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
 
-const Register = () => {
+const AddNewAdmin = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
   const [firstName, setFirstName] = useState("");
@@ -18,23 +18,13 @@ const Register = () => {
 
   const navigateTo = useNavigate();
 
-  const handleRegistration = async (e) => {
+  const handleAddNewAdmin = async (e) => {
     e.preventDefault();
     try {
       await axios
         .post(
-          "http://localhost:4000/api/v1/user/patient/register",
-          {
-            firstName,
-            lastName,
-            email,
-            phone,
-            nic,
-            dob,
-            gender,
-            password,
-            role: "Patient",
-          },
+          "http://localhost:4000/api/v1/user/admin/addnew",
+          { firstName, lastName, email, phone, nic, dob, gender, password },
           {
             withCredentials: true,
             headers: { "Content-Type": "application/json" },
@@ -58,20 +48,16 @@ const Register = () => {
     }
   };
 
-  if (isAuthenticated) {
-    return <Navigate to={"/"} />;
+  if (!isAuthenticated) {
+    return <Navigate to={"/login"} />;
   }
 
   return (
-    <>
-      <div className="container form-component register-form">
-        <h2>Sign Up</h2>
-        <p>Please Sign Up To Continue</p>
-        <p>
-          Join MedSync to simplify hospital management with efficient tools for
-          patient tracking and appointment scheduling.
-        </p>
-        <form onSubmit={handleRegistration}>
+    <section className="page">
+      <section className="container form-component add-admin-form">
+        <img src="/logo1.png" alt="logo1" className="logo" />
+        <h1 className="form-title">ADD NEW ADMIN</h1>
+        <form onSubmit={handleAddNewAdmin}>
           <div>
             <input
               type="text"
@@ -108,18 +94,21 @@ const Register = () => {
               onChange={(e) => setNic(e.target.value)}
             />
             <input
-              type={"date"}
-              placeholder="Date of Birth"
+              type="date"
               value={dob}
               onChange={(e) => setDob(e.target.value)}
+              title="Enter your date of birth"
+              required
             />
+            <label htmlFor="dob" style={{ display: "none" }}>
+              Date of Birth
+            </label>
           </div>
           <div>
             <select value={gender} onChange={(e) => setGender(e.target.value)}>
               <option value="">Select Gender</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
-              <option value="Others">Others</option>
             </select>
             <input
               type="password"
@@ -128,28 +117,13 @@ const Register = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <div
-            style={{
-              gap: "10px",
-              justifyContent: "flex-end",
-              flexDirection: "row",
-            }}
-          >
-            <p style={{ marginBottom: 0 }}>Already Registered?</p>
-            <Link
-              to={"/login"}
-              style={{ textDecoration: "none", color: "#271776ca" }}
-            >
-              Login Now
-            </Link>
-          </div>
           <div style={{ justifyContent: "center", alignItems: "center" }}>
-            <button type="submit">Register</button>
+            <button type="submit">ADD NEW ADMIN</button>
           </div>
         </form>
-      </div>
-    </>
+      </section>
+    </section>
   );
 };
 
-export default Register;
+export default AddNewAdmin;
